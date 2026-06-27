@@ -1,0 +1,18 @@
+.progress-bar{
+    height: 4px;
+    animation: shrink 5s linear forwards;
+}
+
+.toast-enter{
+      animation: slide 0.3s ease-out;
+}
+
+@keyframes shrink{
+    from  {width: 100%;}
+    to {width: 0%}
+}
+
+@keyframes slide{
+    from {transform: translateX(100%);opacity: 0;}
+    to {transform: translateX(0);opacity: 1;}
+}

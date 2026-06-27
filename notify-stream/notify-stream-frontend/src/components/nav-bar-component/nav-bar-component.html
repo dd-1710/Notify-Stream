@@ -1,0 +1,74 @@
+<nav
+  class="bg-blue-900 fixed w-full top-0 left-0 text-white px-6 py-4 flex items-center shadow-md z-50 justify-between">
+  <span class="text-xl"><i>Notify Stream</i></span>
+
+  <span class="flex items-center gap-2">
+    <span class="w-2.5 h-2.5 rounded-full"
+      [class]="connectionStatus() === 'connected' ? 'bg-green-500 animate-[pulse_1s_ease-in-out_infinite]' : 'bg-red-500 animate-[pulse_1s_ease-in-out_infinite]'">
+    </span>
+    <span>
+      {{ connectionStatus() === 'connected' ? 'Live' : 'Reconnecting'}}
+    </span>
+  </span>
+
+  <span class="material-icons cursor-pointer" (click)="showPanel()">notifications</span>
+
+
+  <span
+    class="absolute  top-2 right-4 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{{unReadCount()}}</span>
+</nav>
+<div class="flex gap-4 mt-20 px-8">
+  @for(stat of stats(); track stat.label)
+  {
+  <div class="rounded-md shadow-lg border-t-[5px]  mt-4 p-2 w-64 h-32 flex flex-col justify-between items-center"
+    [class.border-red-400]="stat.type === 'Error'"
+    [class.border-gray-900]="stat.type === 'all'"
+    [class.border-blue-400]="stat.type === 'Info'"
+    [class.border-yellow-400]="stat.type === 'Warning'" >
+    <p class="text-xl font-bold">{{stat.label}}</p>
+    <p class="text-[48px]" [class.text-black-900]="stat.type === 'all'"
+    [class.text-red-500]="stat.type === 'Error'"
+    [class.text-blue-500]="stat.type === 'Info'"
+    [class.text-yellow-500]="stat.type === 'Warning'">{{stat.count}}</p>
+  </div>
+  }
+</div>
+<div class="px-8 mt-8">
+  <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-blue-900 text-white">
+      <tr>
+        <th class="text-left p-3 font-semibold">Notification</th>
+        <th class="text-left p-3 font-semibold">Type</th>
+        <th class="text-left p-3 font-semibold">Timestamp</th>
+        <th class="text-left p-3 font-semibold">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(recentData of recentTableData(); track recentData.id){
+      <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="p-3 font-bold">{{recentData.title}}</td>
+        <td class="p-3"> 
+          <span class= "text-white rounded-full text-sm px-3 py-1 h-1"
+          [class.bg-blue-400]="recentData.type === 'Info'"
+           [class.bg-yellow-400]="recentData.type === 'Warning'"
+            [class.bg-red-400]="recentData.type === 'Error'"
+          >{{recentData.type}}
+          </span>
+        </td>
+        <td class="p-3 text-gray-500 text-sm">{{recentData.timeStamp | date : 'short'}}</td>
+        <td class="p-3"><span class="material-icons cursor-pointer text-xl text-red-500" (click)="deleteNotification(recentData.id)">delete</span></td>
+      </tr>
+      }@empty {
+        <tr><td colspan="4" class="p-4 text-center text-gray-400">No Data to show</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+<div>
+  @if(!panel()){
+    <app-toast-container></app-toast-container>
+  }
+  @if(panel()){
+  <app-notification-panel (close)="showPanel()"></app-notification-panel>
+  }
+</div>
