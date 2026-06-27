@@ -1,4 +1,4 @@
 export const environment   = {
     production: true,
-    websocketUrl: 'ws://localhost:8000'
+     websocketUrl: 'ws://notify-stream-be.onrender.com/'
 }
