@@ -2,7 +2,7 @@ import { computed, Injectable, signal } from "@angular/core";
 import { Notification } from "../models/notification";
 import { webSocket } from "rxjs/webSocket";
 import { retry } from "rxjs/operators";
-import { environment } from "../environment/environment";
+import { environment } from "../environments/environment";
 
 @Injectable({
     providedIn: 'root'
