@@ -2,6 +2,7 @@ import { computed, Injectable, signal } from "@angular/core";
 import { Notification } from "../models/notification";
 import { webSocket } from "rxjs/webSocket";
 import { retry } from "rxjs/operators";
+import { environment } from "../environment/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -9,8 +10,8 @@ import { retry } from "rxjs/operators";
 
 export class NotificationService {
 
-    private websocketURL = 'localhost:8000';
-    private ws$ = webSocket<Notification>(`ws://${this.websocketURL}`);
+ 
+    private ws$ = webSocket<Notification>(environment.websocketUrl);
     private notifications = signal<Notification[]>([]);
     public unread = computed(()=>this.notifications().filter(n=>!n.read).length);
     public allNotification = computed(()=>this.notifications());
